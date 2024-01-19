@@ -11,7 +11,6 @@ const Title = () => (
 );
 
 const Header = () => {
-  // use useState for user logged in or logged out
   const [isLoggedin, setIsLoggedin] = useState(true);
 
   return (
@@ -26,7 +25,6 @@ const Header = () => {
             <i className="fa-solid fa-cart-shopping"></i>
           </li>
           <li>
-            {/* use conditional rendering for login and logout */}
             {isLoggedin ? (
               <button
                 className="logout-btn"
