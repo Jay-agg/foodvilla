@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Logo from "../assets/img/foodvilla.png";
-
+import { Link } from "react-router-dom";
+import About from "./About";
+import Contact from "./Contact";
 const Title = () => (
   <a href="/">
     <img className="logo" alt="logo" src={Logo} />
@@ -15,9 +17,15 @@ const Header = () => {
       <Title />
       <div className="nav-items">
         <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>Contact</li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact</Link>
+          </li>
           <li>
             <i className="fa-solid fa-cart-shopping"></i>
           </li>
