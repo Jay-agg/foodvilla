@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../assets/img/foodvilla.png";
+import Logo from "../../assets/img/foodvilla.png";
 import { Link } from "react-router-dom";
 import About from "./About";
 import Contact from "./Contact";
