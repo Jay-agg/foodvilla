@@ -6,7 +6,7 @@
     "build": "parcel build index.html",
     "test": "jest"
   },
-  "author": "",
+  "author": "Jayant Aggarwal",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.23.7",
