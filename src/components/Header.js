@@ -39,7 +39,7 @@ const Header = () => {
               </button>
             ) : (
               <button className="login-btn" onClick={() => setIsLoggedin(true)}>
-                Login
+                <Link to="/login">Login</Link>
               </button>
             )}
           </li>
