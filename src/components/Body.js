@@ -23,7 +23,7 @@ const Body = () => {
   async function getRestaurants() {
     try {
       const response = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.4089123&lng=77.3177894&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+        "https://foodfire.onrender.com/api/restaurants?lat=21.1702401&lng=72.83106070000001&page_type=DESKTOP_WEB_LISTING"
       );
       const json = await response.json();
 
@@ -36,6 +36,7 @@ const Body = () => {
           if (checkData !== undefined) {
             return checkData;
           }
+          console.log(checkData);
         }
       }
 
