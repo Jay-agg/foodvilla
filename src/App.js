@@ -40,14 +40,15 @@ const appRouter = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "restaurants/:resId",
+        path: "restaurant/:resId",
         element: <Menu />,
       },
-      {
-        path: "/login",
-        element: <Login />,
-      },
     ],
+  },
+
+  {
+    path: "login",
+    element: <Login />,
   },
 ]);
 

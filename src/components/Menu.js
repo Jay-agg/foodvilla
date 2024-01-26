@@ -1,93 +1,105 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; // import useParams for read `resId`
 import {
   swiggy_menu_api_URL,
   IMG_CDN_URL,
   ITEM_IMG_CDN_URL,
   MENU_ITEM_TYPE_KEY,
   RESTAURANT_TYPE_KEY,
-} from "../../config";
+} from "../config";
 import { MenuShimmer } from "./Shimmer";
+import useResMenuData from "../Hooks/useResMenuData"; // imported custom hook useResMenuData which gives restaurant Menu data from swigy api
+import useOnline from "../Hooks/useOnline"; // imported custom hook useOnline which checks user is online or not
+import UserOffline from "./userOffline";
 
-const Menu = () => {
-  const { resId } = useParams();
+const RestaurantMenu = () => {
+  const { resId } = useParams(); // call useParams and get value of restaurant id using object destructuring
+  const [restaurant, menuItems] = useResMenuData(
+    swiggy_menu_api_URL,
+    resId,
+    RESTAURANT_TYPE_KEY,
+    MENU_ITEM_TYPE_KEY
+  );
 
-  useEffect(() => {
-    getRestaurantInfo();
-  }, []);
+  const isOnline = useOnline();
 
-  const [restaurant, setRestaurant] = useState({});
-  const [menuItems, setMenuItems] = useState([]);
-
-  async function getRestaurantInfo() {
-    try {
-      const response = await fetch(swiggy_menu_api_URL + resId);
-      const json = await response.json();
-
-      const restaurantData =
-        json?.data?.cards
-          ?.map((x) => x.card)
-          ?.find((x) => x && x.card["@type"] === RESTAURANT_TYPE_KEY)?.card
-          ?.info || null;
-      setRestaurant(restaurantData);
-    } catch (error) {
-      setRestaurant(null);
-      console.log(error);
-    }
+  // if user is not Online then return UserOffline component
+  if (!isOnline) {
+    return <UserOffline />;
   }
 
-  useEffect(() => {
-    fetchMenuItems();
-  }, [resId]);
-  async function fetchMenuItems() {
-    try {
-      const response = await fetch(swiggy_menu_api_URL + resId);
-      const json = await response.json();
-
-      const menuItemsData =
-        json?.data?.cards
-          .find((x) => x.groupedCard)
-          ?.groupedCard?.cardGroupMap?.REGULAR?.cards?.map((x) => x.card?.card)
-          ?.filter((x) => x["@type"] == MENU_ITEM_TYPE_KEY)
-          ?.map((x) => x.itemCards)
-          .flat()
-          .map((x) => x.card?.info) || [];
-
-      const uniqueMenuItems = [];
-      menuItemsData.forEach((item) => {
-        if (!uniqueMenuItems.find((x) => x.id === item.id)) {
-          uniqueMenuItems.push(item);
-        }
-      });
-      setMenuItems(uniqueMenuItems);
-    } catch (error) {
-      setMenuItems([]);
-      console.log(error);
-    }
-    return menuItems;
-  }
-
-  return (
-    <div className="menu">
-      <div className="menuname">
-        <h1>restaurant id: {resId} </h1>
-        <h2>{restaurant.name}</h2>
-        <img src={IMG_CDN_URL + restaurant.cloudinaryImageId} />
-        <h3>{restaurant.area}</h3>
-        <h3>{restaurant.city}</h3>
-        <h3>{restaurant.avgRating} stars</h3>
-        <h3>{restaurant.costForTwoMsg}</h3>
+  return !restaurant ? (
+    <MenuShimmer />
+  ) : (
+    <div className="restaurant-menu">
+      <div className="restaurant-summary">
+        <img
+          className="restaurant-img"
+          src={IMG_CDN_URL + restaurant?.cloudinaryImageId}
+          alt={restaurant?.name}
+        />
+        <div className="restaurant-summary-details">
+          <h2 className="restaurant-title">{restaurant?.name}</h2>
+          <p className="restaurant-tags">{restaurant?.cuisines?.join(", ")}</p>
+          <div className="restaurant-details">
+            <div
+              className="restaurant-rating"
+              style={
+                restaurant?.avgRating < 4
+                  ? { backgroundColor: "var(--light-red)" }
+                  : restaurant?.avgRating === "--"
+                  ? { backgroundColor: "white", color: "black" }
+                  : { color: "white" }
+              }
+            >
+              <i className="fa-solid fa-star"></i>
+              <span>{restaurant?.avgRating}</span>
+            </div>
+            <div className="restaurant-rating-slash">|</div>
+            <div>{restaurant?.sla?.slaString}</div>
+            <div className="restaurant-rating-slash">|</div>
+            <div>{restaurant?.costForTwoMessage}</div>
+          </div>
+        </div>
       </div>
-      <div className="menuitems">
-        <h1>Menu</h1>
-        <ul>
-          {Object.values(menuItems).map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
+
+      <div className="restaurant-menu-content">
+        <div className="menu-items-container">
+          <div className="menu-title-wrap">
+            <h3 className="menu-title">Recommended</h3>
+            <p className="menu-count">{menuItems.length} ITEMS</p>
+          </div>
+          <div className="menu-items-list">
+            {menuItems.map((item) => (
+              <div className="menu-item" key={item?.id}>
+                <div className="menu-item-details">
+                  <h3 className="item-title">{item?.name}</h3>
+                  <p className="item-cost">
+                    {item?.price > 0
+                      ? new Intl.NumberFormat("en-IN", {
+                          style: "currency",
+                          currency: "INR",
+                        }).format(item?.price / 100)
+                      : " "}
+                  </p>
+                  <p className="item-desc">{item?.description}</p>
+                </div>
+                <div className="menu-img-wrapper">
+                  {item?.imageId && (
+                    <img
+                      className="menu-item-img"
+                      src={ITEM_IMG_CDN_URL + item?.imageId}
+                      alt={item?.name}
+                    />
+                  )}
+                  <button className="add-btn"> ADD +</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Menu;
+export default RestaurantMenu;

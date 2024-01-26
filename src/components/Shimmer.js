@@ -1,4 +1,4 @@
-import { shimmer_card_unit, shimmer_menu_card_unit } from "../../config";
+import { shimmer_card_unit, shimmer_menu_card_unit } from "../config";
 
 // Shimmer card to display with animation
 const CardShimmer = () => {

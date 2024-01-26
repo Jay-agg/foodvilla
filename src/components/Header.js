@@ -26,9 +26,7 @@ const Header = () => {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
-          <li>
-            <i className="fa-solid fa-cart-shopping"></i>
-          </li>
+
           <li>
             {isLoggedin ? (
               <button
