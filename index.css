@@ -199,6 +199,7 @@ a {
 
 .nav-items > ul > li {
   padding: 10px;
+  transition: 0.15s;
 }
 
 .nav-items > ul > li .fa-solid {
