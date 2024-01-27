@@ -3,6 +3,8 @@ import Logo from "../../assets/img/foodvilla.png";
 import { Link } from "react-router-dom";
 import About from "./About";
 import Contact from "./Contact";
+import { useSelector } from "react-redux";
+import { Provider } from "react-redux";
 const Title = () => (
   <a href="/">
     <img className="logo" alt="logo" src={Logo} />
@@ -11,6 +13,8 @@ const Title = () => (
 
 const Header = () => {
   const [isLoggedin, setIsLoggedin] = useState(true);
+  const cartItems = useSelector((store) => store.cart.items);
+  console.log(cartItems);
 
   return (
     <div className="header">
@@ -26,7 +30,9 @@ const Header = () => {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
-
+          <li>
+            <Link to="/cart">Cart({cartItems.length} items)</Link>
+          </li>
           <li>
             {isLoggedin ? (
               <button

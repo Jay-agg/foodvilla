@@ -10,6 +10,9 @@ import { MenuShimmer } from "./Shimmer";
 import useResMenuData from "../Hooks/useResMenuData"; // imported custom hook useResMenuData which gives restaurant Menu data from swigy api
 import useOnline from "../Hooks/useOnline"; // imported custom hook useOnline which checks user is online or not
 import UserOffline from "./userOffline";
+import { UseDispatch, useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
+import ItemsList from "./ItemsList";
 
 const RestaurantMenu = () => {
   const { resId } = useParams(); // call useParams and get value of restaurant id using object destructuring
@@ -69,32 +72,7 @@ const RestaurantMenu = () => {
             <p className="menu-count">{menuItems.length} ITEMS</p>
           </div>
           <div className="menu-items-list">
-            {menuItems.map((item) => (
-              <div className="menu-item" key={item?.id}>
-                <div className="menu-item-details">
-                  <h3 className="item-title">{item?.name}</h3>
-                  <p className="item-cost">
-                    {item?.price > 0
-                      ? new Intl.NumberFormat("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                        }).format(item?.price / 100)
-                      : " "}
-                  </p>
-                  <p className="item-desc">{item?.description}</p>
-                </div>
-                <div className="menu-img-wrapper">
-                  {item?.imageId && (
-                    <img
-                      className="menu-item-img"
-                      src={ITEM_IMG_CDN_URL + item?.imageId}
-                      alt={item?.name}
-                    />
-                  )}
-                  <button className="add-btn"> ADD +</button>
-                </div>
-              </div>
-            ))}
+            <ItemsList />
           </div>
         </div>
       </div>
