@@ -10,7 +10,7 @@ import RestaurantCard from "../RestaurantCard";
 global.fetch = jest.fn(() => {
   return Promise.resolve({
     json: () => {
-      return Promise.resolve(data);
+      return Promise.resolve(MOCK_DATA);
     },
   });
 });
