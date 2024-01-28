@@ -2,7 +2,7 @@ import { IMG_CDN_URL } from "../config";
 
 const RestaurantCard = ({ name, cuisines, cloudinaryImageId, avgRating }) => {
   return (
-    <div className="card">
+    <div className="card" data-testid="resCard">
       <img src={IMG_CDN_URL + cloudinaryImageId} />
       <h2>{name}</h2>
       <h3>{cuisines.join(", ")}</h3>
