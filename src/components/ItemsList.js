@@ -9,6 +9,7 @@ import {
 import useResMenuData from "../Hooks/useResMenuData"; // imported custom hook useResMenuData which gives restaurant Menu data from swigy api
 import { useDispatch } from "react-redux";
 import { addItem } from "../utils/cartSlice";
+import { useEffect } from "react";
 
 const ItemsList = ({ items }) => {
   const { resId } = useParams(); // call useParams and get value of restaurant id using object destructuring
@@ -24,6 +25,10 @@ const ItemsList = ({ items }) => {
   const handleAddItem = (item) => {
     dispatch(addItem(item));
   };
+
+  useEffect(() => {
+    console.log(menuItems);
+  }, [menuItems]);
 
   return (
     <div className="menu-items-list">

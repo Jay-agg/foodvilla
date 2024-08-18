@@ -1,5 +1,5 @@
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react"; /* This is named export */
+import { useEffect, useState } from "react"; /* This is named export */
 import Shimmer from "./Shimmer"; /* This is default export */
 import { swiggy_api_URL } from "../config.js";
 import { Link } from "react-router-dom";
@@ -21,6 +21,10 @@ const Body = () => {
   if (!isOnline) {
     return <UserOffline />;
   }
+
+  useEffect(() => {
+    console.log(allRestaurants);
+  }, [allRestaurants]);
 
   // use searchData function and set condition if data is empty show error message
   const searchData = (searchText, restaurants) => {

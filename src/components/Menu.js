@@ -72,7 +72,7 @@ const RestaurantMenu = () => {
             <p className="menu-count">{menuItems.length} ITEMS</p>
           </div>
           <div className="menu-items-list">
-            <ItemsList />
+            <ItemsList itmes={menuItems} />
           </div>
         </div>
       </div>
